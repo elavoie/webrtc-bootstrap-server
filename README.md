@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/elavoie/webrtc-bootstrap-server.svg?branch=master)](https://travis-ci.org/elavoie/webrtc-bootstrap-server)
 
-Server for the [webrtc-bootstrap](https://github.com/elavoie/webrtc-bootstrap) library.
-
 # Bootstrap server
+
+Server for the [webrtc-bootstrap](https://github.com/elavoie/webrtc-bootstrap) library.
 
 The server can be run locally for tests or deployed on any public server
 (server with a public IP address) that supports WebSockets.
