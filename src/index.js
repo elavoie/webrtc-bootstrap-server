@@ -4,14 +4,12 @@ var debug = require('debug')
 var log = debug('webrtc-bootstrap')
 var randombytes = require('randombytes')
 var express = require('express')
-var app = express()
-var path = require('path')
-app.use(express.static(path.join(__dirname, '../public')))
 
 function Server (secret, port, opts) {
   port = port || process.env.PORT || 5000
   secret = secret || process.env.SECRET
   opts = opts || {}
+  opts.public = opts.public || null
 
   opts.timeout = opts.timeout || 30 * 1000
 
@@ -48,6 +46,10 @@ function Server (secret, port, opts) {
     }
   }
 
+  var app = express()
+  if (opts.public) {
+    app.use(express.static(opts.public))
+  }
   this.httpServer = http.createServer(app)
   this.httpServer.listen(port)
   console.log('http server listening on %d', port)
