@@ -1,6 +1,6 @@
 {
   "name": "webrtc-bootstrap-server",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Server for the webrtc-bootstrap client",
   "main": "src/index.js",
   "directories": {
