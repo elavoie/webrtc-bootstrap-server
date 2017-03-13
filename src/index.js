@@ -60,7 +60,7 @@ function Server (secret, opts) {
   console.log('Opening websocket connection for root on ' + secret)
 
   this.server = new ws.Server({server: this.httpServer})
-    .on('connection/' + secret, function (ws) {
+    .on('connection/' + secret + '/webrtc-bootstrap-root', function (ws) {
       log('root connected')
       ws.on('message', function (data) {
         log('WARNING: unexpected message from root: ' + data)
