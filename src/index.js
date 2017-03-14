@@ -1,7 +1,7 @@
 var http = require('http')
 var ws = require('ws')
 var debug = require('debug')
-var log = debug('webrtc-bootstrap')
+var log = debug('webrtc-bootstrap-server')
 var randombytes = require('randombytes')
 var express = require('express')
 
@@ -23,7 +23,7 @@ function Server (secret, opts) {
     var port = opts.port || process.env.PORT || 5000
     this.httpServer = http.createServer(app)
     this.httpServer.listen(port)
-    console.log('http server listening on %d', port)
+    log('http server listening on %d', port)
   } else {
     this.httpServer = opts.httpServer
   }
@@ -57,7 +57,7 @@ function Server (secret, opts) {
     }
   }
 
-  console.log('Opening websocket connection for root on ' + secret)
+  log('Opening websocket connection for root on ' + secret)
 
   this.server = new ws.Server({server: this.httpServer})
     .on('connection/' + secret + '/webrtc-bootstrap-root', function (ws) {
