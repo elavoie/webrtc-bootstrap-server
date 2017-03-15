@@ -2,8 +2,22 @@ var http = require('http')
 var ws = require('ws')
 var debug = require('debug')
 var log = debug('webrtc-bootstrap-server')
-var randombytes = require('randombytes')
 var express = require('express')
+var crypto = require('crypto')
+
+var random = {
+  seed: 49734321,
+  next: function () {
+    // Robert Jenkins' 32 bit integer hash function.
+    random.seed = ((random.seed + 0x7ed55d16) + (random.seed << 12)) & 0xffffffff
+    random.seed = ((random.seed ^ 0xc761c23c) ^ (random.seed >>> 19)) & 0xffffffff
+    random.seed = ((random.seed + 0x165667b1) + (random.seed << 5)) & 0xffffffff
+    random.seed = ((random.seed + 0xd3a2646c) ^ (random.seed << 9)) & 0xffffffff
+    random.seed = ((random.seed + 0xfd7046c5) + (random.seed << 3)) & 0xffffffff
+    random.seed = ((random.seed ^ 0xb55a4f09) ^ (random.seed >>> 16)) & 0xffffffff
+    return random.seed
+  }
+}
 
 function Server (secret, opts) {
   secret = secret || process.env.SECRET
@@ -13,6 +27,10 @@ function Server (secret, opts) {
 
   if (!secret) {
     throw new Error('Invalid secret: ' + secret)
+  }
+
+  if (opts.seed) {
+    random.seed = Number(opts.seed)
   }
 
   if (!opts.httpServer) {
@@ -73,7 +91,14 @@ function Server (secret, opts) {
         delete prospects[id]
         clearTimeout(timeout)
       }
-      var id = ws.id = randombytes(16).hexSlice()
+      var id = null
+
+      if (opts.seed) {
+        id = crypto.createHash('md5').update(random.next().toString()).digest().hexSlice(0, 16)
+      } else {
+        id = crypto.randomBytes(16).hexSlice()
+      }
+      ws.id = id
       log('node connected with id ' + id)
       ws.on('message', messageHandler(id))
       ws.on('close', remove)

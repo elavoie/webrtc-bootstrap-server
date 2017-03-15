@@ -35,13 +35,16 @@ connect as root to the bootstrap server.
         public: null,
         timeout: 30 * 1000 // ms,
         httpServer: null,
-        port: 5000
+        port: 5000,
+        seed: null
     }
 
 `opts.public` is the path to the public directory for serving static content.
 
 `opts.timeout` is the maximum allowed time for a candidate to successfully join the network.
 
-`httpServer` is an existing http server.
+`opts.httpServer` is an existing http server.
 
-`port` is the port used by the http server if none has been provided.
+`opts.port` is the port used by the http server if none has been provided.
+
+`opts.seed` is a number to use as a seed for the pseudo-random generation of channel ids. If null, the crypto.randomBytes method is used instead.
