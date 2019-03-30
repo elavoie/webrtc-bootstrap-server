@@ -5,6 +5,8 @@ var log = debug('webrtc-bootstrap-server')
 var express = require('express')
 var crypto = require('crypto')
 
+var HEARTBEAT_INTERVAL = 15000 // ms
+
 var random = {
   seed: 49734321,
   next: function () {
@@ -88,10 +90,26 @@ function Server (secret, opts) {
   this.server = new ws.Server({server: this.httpServer})
     .on('connection/' + secret + '/webrtc-bootstrap-root', function (ws) {
       log('root connected')
+      var interval = null
       ws.on('message', function (data) {
-        log('WARNING: unexpected message from root: ' + data)
+        if (JSON.parse(data) === 'heartbeat') {
+          log('root heartbeat')
+        } else {
+          log('WARNING: unexpected message from root: ' + data)
+        }
+      })
+      ws.on('close', function () {
+        log('root closed')
+        clearInterval(interval)
+      })
+      ws.on('error', function (err) {
+        log('ERROR: root failed with error:  ' + err)
+        clearInterval(interval)
       })
       root = ws
+      interval = setInterval(function () {
+        ws.send(JSON.stringify('heartbeat'))
+      }, HEARTBEAT_INTERVAL)
     })
     .on('connection/join', function (ws) {
       function remove () {
