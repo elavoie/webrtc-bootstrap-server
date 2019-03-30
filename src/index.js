@@ -70,7 +70,15 @@ function Server (secret, opts) {
           log('Unknown destination ' + message.destination + ', ignoring message')
         }
       } else {
-        if (root) root.send(JSON.stringify(message))
+        if (root && root.readyState === ws.OPEN) {
+          root.send(JSON.stringify(message))
+        } else {
+          if (!root) {
+            log('WARNING: ignoring message because no root is connected')
+          } else if (root.readyState !== ws.OPEN) {
+            log('WARNING: ignoring message because root WebSocket channel is not open') 
+          }
+        }
       }
     }
   }

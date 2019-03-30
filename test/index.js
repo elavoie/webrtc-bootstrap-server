@@ -52,6 +52,7 @@ tape('README example', function (t) {
   t.ok(bootstrap)
   var newcomers = {}
 
+  log('registering root')
   bootstrap.root(secret, function (req) {
     log('root received: ' + JSON.stringify(req))
 
