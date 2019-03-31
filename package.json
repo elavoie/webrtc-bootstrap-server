@@ -1,6 +1,6 @@
 {
   "name": "webrtc-bootstrap-server",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Server for the webrtc-bootstrap client",
   "main": "src/index.js",
   "directories": {
@@ -16,7 +16,6 @@
   },
   "keywords": [
     "WebRTC",
-    "simple-peer",
     "bootstrap"
   ],
   "author": "Erick Lavoie",
