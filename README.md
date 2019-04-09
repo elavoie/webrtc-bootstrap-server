@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elavoie/webrtc-bootstrap-server.svg?branch=master)](https://travis-ci.org/elavoie/webrtc-bootstrap-server)
+**DEPRECATED: Use [webrtc-bootstrap](https://github.com/elavoie/webrtc-bootstrap) instead.**
 
 # Bootstrap server
 
